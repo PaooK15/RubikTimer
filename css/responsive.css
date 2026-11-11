@@ -1,0 +1,74 @@
+/**
+ * responsive.css
+ * Mobile, Tablet, and Adaptive Viewport Rules
+ */
+
+@media (max-width: 960px) {
+  .app-main {
+    flex-direction: column;
+    padding: 12px 14px;
+    gap: 12px;
+    overflow-y: auto;
+  }
+
+  .content-sidebar {
+    width: 100%;
+    min-width: 0;
+    max-height: 240px;
+  }
+
+  .scramble-bar-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cube-net-card {
+    display: none !important; /* Hide 2D net on small screens to save space */
+  }
+
+  .stats-summary-bar {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .timer-digits {
+    font-size: clamp(3.8rem, 16vw, 6.5rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0 14px;
+    height: 56px;
+    min-height: 56px;
+  }
+
+  .brand-title {
+    font-size: 16px;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .header-controls .btn-text {
+    display: none;
+  }
+
+  .theme-presets-grid,
+  .wallpaper-presets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-summary-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stat-value {
+    font-size: 14px;
+  }
+
+  .modal-card {
+    max-height: 94vh;
+  }
+}
