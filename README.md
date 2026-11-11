@@ -1,6 +1,15 @@
 # SpeedRubik Timer 🧊⏱️
 
-A modern, high-precision Rubik's Cube Solution & Speedcubing Timer web application built with glassmorphic design, dynamic wallpapers (image, video, GIF), customizable HTML color palettes, and official WCA scrambles.
+A modern, high-precision Rubik's Cube Solution & Speedcubing Timer web application built with glassmorphic design, dynamic wallpapers (image, video, GIF), customizable HTML color palettes, official WCA scrambles, and full **Vietnamese 🇻🇳 & English 🇬🇧** bilingual support.
+
+---
+
+## 🌐 Language Support / Hỗ Trợ Đa Ngôn Ngữ (Tiếng Việt & English)
+
+Seamless one-click language switching between **Tiếng Việt (Vietnamese)** and **English**:
+- **Instant Language Dropdown**: Switch instantly using the language selector in the top navigation bar (`🇬🇧 English` / `🇻🇳 Tiếng Việt`).
+- **Full Localization**: Translates all UI elements including timer statuses, hints, WCA scramble nets, stats overview, solve records, modal settings, tooltips, and notification toasts.
+- **Smart Auto-Detection**: Automatically detects your browser's language setting (defaults to Vietnamese if your system language is `vi`, otherwise English) and remembers your preference in local storage.
 
 ---
 

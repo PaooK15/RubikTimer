@@ -11,6 +11,7 @@ import { CubeVisualizer } from './cubeVisualizer.js';
 import { statsManager, StatsManager } from './stats.js';
 import { soundManager } from './sound.js';
 import { storage } from './storage.js';
+import { i18n } from './i18n.js';
 
 class SpeedcubeApp {
   constructor() {
@@ -22,45 +23,86 @@ class SpeedcubeApp {
   }
 
   async init() {
-    // 1. Initialize Theme
+    // 1. Initialize Internationalization (Vietnamese & English)
+    this.setupLanguageUI();
+
+    // 2. Initialize Theme
     themeManager.init();
 
-    // 2. Initialize Wallpaper Manager
+    // 3. Initialize Wallpaper Manager
     const wallpaperContainer = document.getElementById('wallpaper-container');
     const wallpaperMedia = document.getElementById('wallpaper-media');
     const wallpaperOverlay = document.getElementById('wallpaper-overlay');
     await wallpaperManager.init(wallpaperContainer, wallpaperMedia, wallpaperOverlay);
 
-    // 3. Initialize Cube 2D Net Visualizer
+    // 4. Initialize Cube 2D Net Visualizer
     const canvas = document.getElementById('cube-net-canvas');
     if (canvas) {
       this.cubeVisualizer = new CubeVisualizer(canvas);
     }
 
-    // 4. Setup Scramble
+    // 5. Setup Scramble
     this.setupScramble();
 
-    // 5. Setup Timer Callbacks
+    // 6. Setup Timer Callbacks
     this.setupTimer();
 
-    // 6. Setup Theme UI & Color Pickers
+    // 7. Setup Theme UI & Color Pickers
     this.setupThemeUI();
 
-    // 7. Setup Wallpaper UI
+    // 8. Setup Wallpaper UI
     this.setupWallpaperUI();
 
-    // 8. Setup Statistics & Solves UI
+    // 9. Setup Statistics & Solves UI
     this.setupStatsUI();
 
-    // 9. Setup Settings & Modals
+    // 10. Setup Settings & Modals
     this.setupSettingsUI();
 
-    // 10. Setup Global Keyboard & Touch Listeners
+    // 11. Setup Global Keyboard & Touch Listeners
     this.setupEventListeners();
 
-    // 11. Initial Stats Render
+    // 12. Initial Stats Render
     this.renderStats();
     this.renderSolvesList();
+  }
+
+  // Language Selector Setup
+  setupLanguageUI() {
+    const langSelector = document.getElementById('lang-selector');
+    if (langSelector) {
+      langSelector.value = i18n.getLanguage();
+      langSelector.addEventListener('change', (e) => {
+        i18n.setLanguage(e.target.value);
+        this.updateDynamicTexts();
+        this.renderStats();
+        this.renderSolvesList();
+        this.showToast(i18n.t('toast.langChanged'));
+      });
+    }
+
+    // Apply translations across DOM
+    i18n.applyTranslations();
+  }
+
+  // Update dynamic texts on language change
+  updateDynamicTexts() {
+    const statusPill = document.getElementById('timer-status-pill');
+    if (statusPill) {
+      if (timer.state === TIMER_STATES.HOLDING || timer.state === TIMER_STATES.INSPECTION_HOLDING) {
+        statusPill.textContent = i18n.t('timer.status.holding');
+      } else if (timer.state === TIMER_STATES.READY || timer.state === TIMER_STATES.INSPECTION_READY) {
+        statusPill.textContent = i18n.t('timer.status.ready');
+      } else if (timer.state === TIMER_STATES.INSPECTION_RUNNING) {
+        statusPill.textContent = i18n.t('timer.status.inspection');
+      } else if (timer.state === TIMER_STATES.RUNNING) {
+        statusPill.textContent = i18n.t('timer.status.running');
+      } else if (timer.state === TIMER_STATES.STOPPED) {
+        statusPill.textContent = i18n.t('timer.status.stopped');
+      } else {
+        statusPill.textContent = i18n.t('timer.status.idle');
+      }
+    }
   }
 
   // Scramble Generation & Visualizer Sync
@@ -106,8 +148,8 @@ class SpeedcubeApp {
         e.stopPropagation();
         try {
           await navigator.clipboard.writeText(this.currentScramble);
-          copyScrambleBtn.textContent = 'Copied!';
-          setTimeout(() => { copyScrambleBtn.textContent = 'Copy'; }, 1500);
+          copyScrambleBtn.textContent = i18n.t('scramble.copied');
+          setTimeout(() => { copyScrambleBtn.textContent = '📋'; }, 1500);
         } catch (err) {
           console.warn('Clipboard failed', err);
         }
@@ -135,7 +177,7 @@ class SpeedcubeApp {
         }
       } else {
         if (timer.state === TIMER_STATES.RUNNING && timer.hideTimeWhileSolving) {
-          timerDisplay.textContent = 'Solving...';
+          timerDisplay.textContent = i18n.t('timer.solvingText');
         } else {
           timerDisplay.textContent = SpeedTimer.format(value, timer.decimals);
         }
@@ -149,23 +191,23 @@ class SpeedcubeApp {
 
       if (state === TIMER_STATES.HOLDING || state === TIMER_STATES.INSPECTION_HOLDING) {
         timerDisplay.classList.add('holding');
-        if (statusPill) statusPill.textContent = 'HOLD...';
+        if (statusPill) statusPill.textContent = i18n.t('timer.status.holding');
       } else if (state === TIMER_STATES.READY || state === TIMER_STATES.INSPECTION_READY) {
         timerDisplay.classList.add('ready');
-        if (statusPill) statusPill.textContent = 'READY! RELEASE TO START';
+        if (statusPill) statusPill.textContent = i18n.t('timer.status.ready');
       } else if (state === TIMER_STATES.INSPECTION_RUNNING) {
         timerDisplay.classList.add('inspection');
-        if (statusPill) statusPill.textContent = 'INSPECTION TIME';
+        if (statusPill) statusPill.textContent = i18n.t('timer.status.inspection');
       } else if (state === TIMER_STATES.RUNNING) {
         timerDisplay.classList.add('running');
         if (timer.zenMode) {
           appContainer.classList.add('solving-zen');
         }
-        if (statusPill) statusPill.textContent = 'SOLVING... TAP ANY KEY TO STOP';
+        if (statusPill) statusPill.textContent = i18n.t('timer.status.running');
       } else if (state === TIMER_STATES.STOPPED) {
-        if (statusPill) statusPill.textContent = 'SOLVE COMPLETE';
+        if (statusPill) statusPill.textContent = i18n.t('timer.status.stopped');
       } else {
-        if (statusPill) statusPill.textContent = 'PRESS & HOLD SPACE / SCREEN';
+        if (statusPill) statusPill.textContent = i18n.t('timer.status.idle');
       }
     };
 
@@ -178,7 +220,7 @@ class SpeedcubeApp {
 
       if (isNewPB && result.penalty !== 'DNF') {
         soundManager.playPBFanfare();
-        this.showToast('🎉 NEW PERSONAL BEST! 🎉');
+        this.showToast(i18n.t('toast.pb'));
       }
 
       // Refresh stats & list
@@ -637,7 +679,7 @@ class SpeedcubeApp {
 
     if (newSessionBtn) {
       newSessionBtn.addEventListener('click', () => {
-        const name = prompt('Enter new session name (e.g. "3x3 Roux", "Practice", "BLD"):');
+        const name = prompt(i18n.t('solves.promptNewSession'));
         if (name) {
           statsManager.createSession(name, this.currentPuzzle);
           this.renderSessionsDropdown();
@@ -649,11 +691,11 @@ class SpeedcubeApp {
 
     if (clearSessionBtn) {
       clearSessionBtn.addEventListener('click', () => {
-        if (confirm('Are you sure you want to clear all solves in this session? This cannot be undone.')) {
+        if (confirm(i18n.t('solves.confirmClear'))) {
           statsManager.clearCurrentSession();
           this.renderStats();
           this.renderSolvesList();
-          this.showToast('Session solves cleared.');
+          this.showToast(i18n.t('solves.clearedToast'));
         }
       });
     }
@@ -720,7 +762,7 @@ class SpeedcubeApp {
     container.innerHTML = '';
 
     if (solves.length === 0) {
-      container.innerHTML = '<div class="no-solves-msg">No solves yet. Press Spacebar or touch the screen to start your first solve!</div>';
+      container.innerHTML = `<div class="no-solves-msg">${i18n.t('solves.noSolves')}</div>`;
       return;
     }
 
@@ -778,8 +820,13 @@ class SpeedcubeApp {
 
       // Click row to view scramble & detail popup
       row.addEventListener('click', () => {
+        const dateLocale = i18n.getLanguage() === 'vi' ? 'vi-VN' : 'en-US';
         alert(
-          `Solve #${indexNum}\nTime: ${timeFormatted}\nPenalty: ${solve.penalty}\nDate: ${new Date(solve.timestamp).toLocaleString()}\n\nScramble:\n${solve.scramble}`
+          `${i18n.t('solves.detailTitle', { idx: indexNum })}\n` +
+          `${i18n.t('solves.detailTime', { time: timeFormatted })}\n` +
+          `${i18n.t('solves.detailPenalty', { penalty: solve.penalty })}\n` +
+          `${i18n.t('solves.detailDate', { date: new Date(solve.timestamp).toLocaleString(dateLocale) })}\n\n` +
+          `${i18n.t('solves.detailScramble')}\n${solve.scramble}`
         );
       });
 
@@ -848,7 +895,7 @@ class SpeedcubeApp {
         timer.setZenMode(!timer.zenMode);
         if (zenToggle) zenToggle.checked = timer.zenMode;
         document.getElementById('app-container').classList.toggle('zen-activated', timer.zenMode);
-        this.showToast(timer.zenMode ? 'Zen Mode ON' : 'Zen Mode OFF');
+        this.showToast(timer.zenMode ? i18n.t('toast.zenOn') : i18n.t('toast.zenOff'));
       });
     }
   }

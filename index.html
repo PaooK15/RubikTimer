@@ -43,43 +43,49 @@
       <div class="header-controls">
         <!-- Puzzle Selection -->
         <select id="puzzle-selector" class="select-input" title="Choose Puzzle">
-          <option value="333" selected>3x3x3 Cube</option>
-          <option value="222">2x2x2 Cube</option>
-          <option value="444">4x4x4 Cube</option>
-          <option value="pyram">Pyraminx</option>
-          <option value="skewb">Skewb</option>
+          <option value="333" data-i18n="puzzle.333" selected>3x3x3 Cube</option>
+          <option value="222" data-i18n="puzzle.222">2x2x2 Cube</option>
+          <option value="444" data-i18n="puzzle.444">4x4x4 Cube</option>
+          <option value="pyram" data-i18n="puzzle.pyram">Pyraminx</option>
+          <option value="skewb" data-i18n="puzzle.skewb">Skewb</option>
+        </select>
+
+        <!-- Language Selector (English & Vietnamese) -->
+        <select id="lang-selector" class="select-input" style="font-weight: 600;" title="Change Language / Đổi Ngôn Ngữ">
+          <option value="en">🇬🇧 English</option>
+          <option value="vi">🇻🇳 Tiếng Việt</option>
         </select>
 
         <!-- Change Theme Color (HTML Color Full Color Customizer) -->
-        <button id="btn-open-theme" class="btn" title="Customize HTML Theme Colors">
+        <button id="btn-open-theme" class="btn" title="Customize HTML Theme Colors" data-i18n-title="nav.theme">
           <span>🎨</span>
-          <span class="btn-text">Theme Colors</span>
+          <span class="btn-text" data-i18n="nav.theme">Theme Colors</span>
         </button>
 
         <!-- Change Wallpaper (Image, Video, GIF) -->
-        <button id="btn-open-wallpaper" class="btn" title="Change Wallpaper (Image, GIF, Video)">
+        <button id="btn-open-wallpaper" class="btn" title="Change Wallpaper (Image, GIF, Video)" data-i18n-title="nav.wallpaper">
           <span>🖼️</span>
-          <span class="btn-text">Wallpaper</span>
+          <span class="btn-text" data-i18n="nav.wallpaper">Wallpaper</span>
         </button>
 
         <!-- Block Transparency Shortcut -->
-        <button id="btn-open-transparency" class="btn" title="Customize Transparency of Blocks (Solve History, Timer, etc.)">
+        <button id="btn-open-transparency" class="btn" title="Customize Transparency of Blocks (Solve History, Timer, etc.)" data-i18n-title="nav.transparency">
           <span>🪟</span>
-          <span class="btn-text">Transparency</span>
+          <span class="btn-text" data-i18n="nav.transparency">Transparency</span>
         </button>
 
         <!-- Quick Zen Mode Toggle -->
-        <button id="btn-header-zen" class="btn btn-icon" title="Toggle Zen Distraction-Free Mode">
+        <button id="btn-header-zen" class="btn btn-icon" title="Toggle Zen Distraction-Free Mode" data-i18n-title="nav.zen">
           🧘
         </button>
 
         <!-- Quick Audio Toggle -->
-        <button id="btn-header-sound" class="btn btn-icon" title="Toggle Sound Cues">
+        <button id="btn-header-sound" class="btn btn-icon" title="Toggle Sound Cues" data-i18n-title="nav.sound">
           🔊
         </button>
 
         <!-- Settings -->
-        <button id="btn-open-settings" class="btn btn-icon" title="Open Settings">
+        <button id="btn-open-settings" class="btn btn-icon" title="Open Settings" data-i18n-title="nav.settings">
           ⚙️
         </button>
       </div>
@@ -95,23 +101,23 @@
         <div class="scramble-bar-container glass-panel">
           <div class="scramble-main">
             <div class="scramble-meta">
-              <span>WCA Official Scramble</span>
+              <span data-i18n="scramble.title">WCA Official Scramble</span>
               <span>•</span>
               <span id="scramble-puzzle-tag">3x3x3</span>
             </div>
-            <div id="scramble-display" class="scramble-display">Generating scramble...</div>
+            <div id="scramble-display" class="scramble-display" data-i18n="scramble.generating">Generating scramble...</div>
           </div>
 
           <div class="scramble-actions">
             <!-- 2D Cube Net Preview Box -->
-            <div id="cube-net-wrapper" class="cube-net-card" title="2D Unfolded Scramble Verification Net">
-              <span class="cube-net-header">Scramble Net</span>
+            <div id="cube-net-wrapper" class="cube-net-card" title="2D Unfolded Scramble Verification Net" data-i18n-title="scramble.net">
+              <span class="cube-net-header" data-i18n="scramble.net">Scramble Net</span>
               <canvas id="cube-net-canvas" width="140" height="105"></canvas>
             </div>
 
             <!-- Scramble action buttons -->
-            <button id="btn-copy-scramble" class="btn btn-icon" title="Copy Scramble to Clipboard">📋</button>
-            <button id="btn-next-scramble" class="btn btn-primary" title="Generate Next Scramble (Alt+N)">Next ➔</button>
+            <button id="btn-copy-scramble" class="btn btn-icon" title="Copy Scramble to Clipboard" data-i18n-title="scramble.copy">📋</button>
+            <button id="btn-next-scramble" class="btn btn-primary" title="Generate Next Scramble (Alt+N)" data-i18n="scramble.next">Next ➔</button>
           </div>
         </div>
 
@@ -119,10 +125,10 @@
         <div id="timer-pad" class="timer-area glass-panel">
           <div id="timer-touch-zone" class="timer-surface"></div>
           <div class="timer-content">
-            <div id="timer-status-pill" class="timer-status-pill">PRESS & HOLD SPACE / SCREEN</div>
+            <div id="timer-status-pill" class="timer-status-pill" data-i18n="timer.status.idle">PRESS & HOLD SPACE / SCREEN</div>
             <div id="timer-time" class="timer-digits">0.00</div>
             <div class="timer-hint">
-              <span>Hold</span> <span class="kbd-badge">Space</span> <span>until green, then release to solve</span>
+              <span data-i18n="timer.hint.hold">Hold</span> <span class="kbd-badge" data-i18n="timer.hint.space">Space</span> <span data-i18n="timer.hint.untilGreen">until green, then release to solve</span>
             </div>
           </div>
         </div>
@@ -130,31 +136,31 @@
         <!-- BOTTOM STATS SUMMARY BAR -->
         <div class="stats-summary-bar glass-panel">
           <div class="stat-item">
-            <span class="stat-label">Best Single</span>
+            <span class="stat-label" data-i18n="stats.best">Best Single</span>
             <span id="stat-best" class="stat-value stat-highlight">--.--</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Session Mean</span>
+            <span class="stat-label" data-i18n="stats.mean">Session Mean</span>
             <span id="stat-mean" class="stat-value">--.--</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Current Ao5</span>
+            <span class="stat-label" data-i18n="stats.curAo5">Current Ao5</span>
             <span id="stat-cur-ao5" class="stat-value">--.--</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Best Ao5</span>
+            <span class="stat-label" data-i18n="stats.bestAo5">Best Ao5</span>
             <span id="stat-best-ao5" class="stat-value stat-highlight">--.--</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Current Ao12</span>
+            <span class="stat-label" data-i18n="stats.curAo12">Current Ao12</span>
             <span id="stat-cur-ao12" class="stat-value">--.--</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Best Ao12</span>
+            <span class="stat-label" data-i18n="stats.bestAo12">Best Ao12</span>
             <span id="stat-best-ao12" class="stat-value stat-highlight">--.--</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Total Solves</span>
+            <span class="stat-label" data-i18n="stats.count">Total Solves</span>
             <span id="stat-count" class="stat-value">0</span>
           </div>
         </div>
@@ -166,8 +172,8 @@
         <div class="solves-panel glass-panel">
           <div class="solves-panel-header">
             <div class="solves-top-row">
-              <span class="solves-title">Solve History</span>
-              <button id="btn-new-session" class="btn" style="padding: 4px 10px; font-size: 12px;">+ Session</button>
+              <span class="solves-title" data-i18n="solves.title">Solve History</span>
+              <button id="btn-new-session" class="btn" style="padding: 4px 10px; font-size: 12px;" data-i18n="solves.newSession">+ Session</button>
             </div>
             <div class="session-toolbar">
               <select id="session-selector" class="select-input" title="Switch Session"></select>
@@ -181,8 +187,8 @@
 
           <!-- Solves footer actions -->
           <div class="solves-footer-actions">
-            <button id="btn-export-solves" class="btn" style="flex: 1;">📥 Export CSV</button>
-            <button id="btn-clear-session" class="btn" style="color: #f87171;" title="Clear Solves in Current Session">🗑️ Clear</button>
+            <button id="btn-export-solves" class="btn" style="flex: 1;" data-i18n="solves.exportCsv">📥 Export CSV</button>
+            <button id="btn-clear-session" class="btn" style="color: #f87171;" title="Clear Solves in Current Session" data-i18n="solves.clear">🗑️ Clear</button>
           </div>
         </div>
       </aside>
@@ -197,19 +203,19 @@
   <div id="theme-modal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">🎨 Theme Color Customizer</h3>
+        <h3 class="modal-title" data-i18n="theme.modalTitle">🎨 Theme Color Customizer</h3>
         <button id="btn-close-theme" class="btn btn-icon">×</button>
       </div>
 
       <div class="modal-body">
         <div>
-          <div class="modal-section-title">Customize Palette (HTML Full Color Pickers)</div>
+          <div class="modal-section-title" data-i18n="theme.paletteTitle">Customize Palette (HTML Full Color Pickers)</div>
           <div class="theme-pickers-list">
 
             <!-- Color 1 -->
             <div class="color-picker-row">
               <div class="color-picker-info">
-                <span class="color-picker-title">--color-1 (Surface Highlight & Light Text)</span>
+                <span class="color-picker-title" data-i18n="theme.color1">--color-1 (Surface Highlight & Light Text)</span>
                 <span class="color-picker-sub">Default: #EAF1FB</span>
               </div>
               <div class="color-picker-controls">
@@ -221,7 +227,7 @@
             <!-- Color 2 -->
             <div class="color-picker-row">
               <div class="color-picker-info">
-                <span class="color-picker-title">--color-2 (Soft Sky Blue / Borders & Muted)</span>
+                <span class="color-picker-title" data-i18n="theme.color2">--color-2 (Soft Sky Blue / Borders & Muted)</span>
                 <span class="color-picker-sub">Default: #B7CFF0</span>
               </div>
               <div class="color-picker-controls">
@@ -233,7 +239,7 @@
             <!-- Color 3 -->
             <div class="color-picker-row">
               <div class="color-picker-info">
-                <span class="color-picker-title">--color-3 (Vibrant Cerulean / Primary Interactive)</span>
+                <span class="color-picker-title" data-i18n="theme.color3">--color-3 (Vibrant Cerulean / Primary Interactive)</span>
                 <span class="color-picker-sub">Default: #6E9DE0</span>
               </div>
               <div class="color-picker-controls">
@@ -245,7 +251,7 @@
             <!-- Color 4 -->
             <div class="color-picker-row">
               <div class="color-picker-info">
-                <span class="color-picker-title">--color-4 (Royal Blue / Accent & Buttons)</span>
+                <span class="color-picker-title" data-i18n="theme.color4">--color-4 (Royal Blue / Accent & Buttons)</span>
                 <span class="color-picker-sub">Default: #2F66C1</span>
               </div>
               <div class="color-picker-controls">
@@ -257,7 +263,7 @@
             <!-- Color 5 -->
             <div class="color-picker-row">
               <div class="color-picker-info">
-                <span class="color-picker-title">--color-5 (Deep Navy Blue / Dark Base)</span>
+                <span class="color-picker-title" data-i18n="theme.color5">--color-5 (Deep Navy Blue / Dark Base)</span>
                 <span class="color-picker-sub">Default: #173A75</span>
               </div>
               <div class="color-picker-controls">
@@ -271,17 +277,17 @@
 
         <!-- Presets -->
         <div>
-          <div class="modal-section-title">Curated Theme Presets</div>
+          <div class="modal-section-title" data-i18n="theme.presetsTitle">Curated Theme Presets</div>
           <div id="theme-presets-grid" class="theme-presets-grid"></div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button id="btn-reset-theme" class="btn">↺ Reset to Default Azure</button>
+        <button id="btn-reset-theme" class="btn" data-i18n="theme.resetBtn">↺ Reset to Default Azure</button>
         <div style="display: flex; gap: 8px;">
           <input type="file" id="theme-import-file" accept=".json" style="display: none;">
-          <button id="btn-import-theme" class="btn">Import JSON</button>
-          <button id="btn-export-theme" class="btn btn-primary">Export JSON</button>
+          <button id="btn-import-theme" class="btn" data-i18n="theme.importBtn">Import JSON</button>
+          <button id="btn-export-theme" class="btn btn-primary" data-i18n="theme.exportBtn">Export JSON</button>
         </div>
       </div>
     </div>
@@ -293,23 +299,23 @@
   <div id="wallpaper-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
-        <h3 class="modal-title">🖼️ Wallpaper & Visual Atmosphere</h3>
+        <h3 class="modal-title" data-i18n="wallpaper.modalTitle">🖼️ Wallpaper & Visual Atmosphere</h3>
         <button id="btn-close-wallpaper" class="btn btn-icon">×</button>
       </div>
 
       <!-- NAVIGATION TABS -->
       <div class="modal-tabs">
         <button id="tab-btn-media" class="modal-tab-btn active" data-tab="media">
-          <span>🖼️</span> Wallpaper Source
+          <span>🖼️</span> <span data-i18n="wallpaper.tab.media">Wallpaper Source</span>
         </button>
         <button id="tab-btn-position" class="modal-tab-btn" data-tab="position">
-          <span>🎯</span> Background Position
+          <span>🎯</span> <span data-i18n="wallpaper.tab.position">Background Position</span>
         </button>
         <button id="tab-btn-transparency" class="modal-tab-btn" data-tab="transparency">
-          <span>🪟</span> Block Transparency
+          <span>🪟</span> <span data-i18n="wallpaper.tab.transparency">Block Transparency</span>
         </button>
         <button id="tab-btn-atmosphere" class="modal-tab-btn" data-tab="atmosphere">
-          <span>✨</span> Atmosphere & Dim
+          <span>✨</span> <span data-i18n="wallpaper.tab.atmosphere">Atmosphere & Dim</span>
         </button>
       </div>
 
@@ -319,31 +325,31 @@
         <div id="tab-panel-media" class="modal-tab-panel active">
           <!-- Local File Upload (Image, GIF, MP4/WebM Video) -->
           <div>
-            <div class="modal-section-title">Upload Local Wallpaper (Image, GIF, Video)</div>
+            <div class="modal-section-title" data-i18n="wallpaper.uploadTitle">Upload Local Wallpaper (Image, GIF, Video)</div>
             <div id="wallpaper-drop-area" class="drop-zone-box">
               <div class="drop-icon">📁</div>
-              <div class="drop-text-main">Click or Drag & Drop File Here</div>
-              <div class="drop-text-sub">Supports .PNG, .JPG, .WEBP, animated .GIF, .MP4, .WEBM video</div>
+              <div class="drop-text-main" data-i18n="wallpaper.dropMain">Click or Drag & Drop File Here</div>
+              <div class="drop-text-sub" data-i18n="wallpaper.dropSub">Supports .PNG, .JPG, .WEBP, animated .GIF, .MP4, .WEBM video</div>
               <input type="file" id="wallpaper-file-input" accept="image/*,video/mp4,video/webm" style="display: none;">
             </div>
           </div>
 
           <!-- Direct Web URL Input -->
           <div>
-            <div class="modal-section-title">Or Apply via Direct Web URL</div>
+            <div class="modal-section-title" data-i18n="wallpaper.urlTitle">Or Apply via Direct Web URL</div>
             <div class="url-input-group">
               <select id="wallpaper-url-type" class="select-input" style="width: 120px;">
                 <option value="image">Image / GIF</option>
                 <option value="video">MP4 Video</option>
               </select>
               <input type="text" id="wallpaper-url-input" class="text-input" placeholder="https://example.com/wallpaper.gif or .mp4">
-              <button id="btn-apply-wallpaper-url" class="btn btn-primary">Apply</button>
+              <button id="btn-apply-wallpaper-url" class="btn btn-primary" data-i18n="wallpaper.urlApply">Apply</button>
             </div>
           </div>
 
           <!-- Built-in Wallpaper Presets -->
           <div>
-            <div class="modal-section-title">Built-In Dynamic Presets</div>
+            <div class="modal-section-title" data-i18n="wallpaper.presetsTitle">Built-In Dynamic Presets</div>
             <div id="wallpaper-presets-grid" class="wallpaper-presets-grid"></div>
           </div>
         </div>
@@ -353,7 +359,7 @@
           
           <!-- 9-Point Alignment Grid -->
           <div>
-            <div class="modal-section-title">Quick Alignment Grid</div>
+            <div class="modal-section-title" data-i18n="pos.gridTitle">Quick Alignment Grid</div>
             <div class="position-grid-container">
               <div class="position-grid">
                 <button class="btn-pos-grid" data-pos-x="0" data-pos-y="0" title="Top Left">↖</button>
@@ -367,45 +373,45 @@
                 <button class="btn-pos-grid" data-pos-x="100" data-pos-y="100" title="Bottom Right">↘</button>
               </div>
               <div class="position-grid-meta">
-                <div class="position-grid-title">Align Focus Area</div>
-                <div class="position-grid-desc">Click any anchor arrow to instantly pan your wallpaper or video towards that section.</div>
-                <button id="btn-reset-bg-pos" class="btn" style="align-self: flex-start; padding: 4px 10px; font-size: 12px; margin-top: 4px;">↺ Center & Reset</button>
+                <div class="position-grid-title" data-i18n="pos.alignFocus">Align Focus Area</div>
+                <div class="position-grid-desc" data-i18n="pos.gridDesc">Click any anchor arrow to instantly pan your wallpaper or video towards that section.</div>
+                <button id="btn-reset-bg-pos" class="btn" style="align-self: flex-start; padding: 4px 10px; font-size: 12px; margin-top: 4px;" data-i18n="pos.resetBtn">↺ Center & Reset</button>
               </div>
             </div>
           </div>
 
           <!-- Position Sliders -->
           <div>
-            <div class="modal-section-title">Fine Position & Scale</div>
+            <div class="modal-section-title" data-i18n="pos.slidersTitle">Fine Position & Scale</div>
             <div class="slider-group">
               
               <!-- Fit Mode -->
               <div class="slider-row">
-                <span class="slider-label">Display Fit Mode</span>
+                <span class="slider-label" data-i18n="pos.fitMode">Display Fit Mode</span>
                 <select id="select-bg-fit" class="select-input" style="flex: 1;">
-                  <option value="cover" selected>Cover (Fill entire screen, crop edges)</option>
-                  <option value="contain">Contain (Fit full image inside screen)</option>
-                  <option value="fill">Fill (Stretch to fit)</option>
+                  <option value="cover" data-i18n="pos.fitCover" selected>Cover (Fill entire screen, crop edges)</option>
+                  <option value="contain" data-i18n="pos.fitContain">Contain (Fit full image inside screen)</option>
+                  <option value="fill" data-i18n="pos.fitFill">Fill (Stretch to fit)</option>
                 </select>
               </div>
 
               <!-- Position X -->
               <div class="slider-row">
-                <span class="slider-label">Horizontal Position (X)</span>
+                <span class="slider-label" data-i18n="pos.posX">Horizontal Position (X)</span>
                 <input type="range" id="slider-bg-pos-x" class="range-slider" min="0" max="100" value="50">
                 <span id="val-bg-pos-x" class="slider-val-badge">50%</span>
               </div>
 
               <!-- Position Y -->
               <div class="slider-row">
-                <span class="slider-label">Vertical Position (Y)</span>
+                <span class="slider-label" data-i18n="pos.posY">Vertical Position (Y)</span>
                 <input type="range" id="slider-bg-pos-y" class="range-slider" min="0" max="100" value="50">
                 <span id="val-bg-pos-y" class="slider-val-badge">50%</span>
               </div>
 
               <!-- Zoom / Scale -->
               <div class="slider-row">
-                <span class="slider-label">Wallpaper Zoom / Scale</span>
+                <span class="slider-label" data-i18n="pos.scale">Wallpaper Zoom / Scale</span>
                 <input type="range" id="slider-bg-scale" class="range-slider" min="50" max="250" value="100">
                 <span id="val-bg-scale" class="slider-val-badge">100%</span>
               </div>
@@ -420,16 +426,16 @@
 
           <!-- Presets -->
           <div>
-            <div class="modal-section-title">Quick Transparency Presets</div>
+            <div class="modal-section-title" data-i18n="trans.presetsTitle">Quick Transparency Presets</div>
             <div class="preset-pill-group">
               <button class="btn-preset-pill" data-trans-preset="ghost">
-                <span>👻</span> Pure Crystal Ghost (15% Solid)
+                <span>👻</span> <span data-i18n="trans.ghost">Pure Crystal Ghost (15% Solid)</span>
               </button>
               <button class="btn-preset-pill active" data-trans-preset="balanced">
-                <span>💎</span> Balanced Glass (60% Solid)
+                <span>💎</span> <span data-i18n="trans.balanced">Balanced Glass (60% Solid)</span>
               </button>
               <button class="btn-preset-pill" data-trans-preset="solid">
-                <span>⬛</span> High Contrast Solid (90% Solid)
+                <span>⬛</span> <span data-i18n="trans.solid">High Contrast Solid (90% Solid)</span>
               </button>
             </div>
           </div>
@@ -438,24 +444,24 @@
           <div class="block-transparency-card">
             <div class="block-transparency-item">
               <div class="block-transparency-header">
-                <span class="block-item-name" style="font-size: 14px; font-weight: 700;">🌐 Master Global Cards Transparency</span>
+                <span class="block-item-name" style="font-size: 14px; font-weight: 700;" data-i18n="trans.globalTitle">🌐 Master Global Cards Transparency</span>
                 <span id="val-opacity-global" class="slider-val-badge">65%</span>
               </div>
               <input type="range" id="slider-opacity-global" class="range-slider" min="0" max="100" value="65">
-              <span class="block-item-desc">Adjusts opacity across all panels simultaneously. Set to 0% for pure transparent glass.</span>
+              <span class="block-item-desc" data-i18n="trans.globalDesc">Adjusts opacity across all panels simultaneously. Set to 0% for pure transparent glass.</span>
             </div>
           </div>
 
           <!-- Individual Block Sliders -->
           <div>
-            <div class="modal-section-title">Individual Block Transparency</div>
+            <div class="modal-section-title" data-i18n="trans.individualTitle">Individual Block Transparency</div>
             <div class="slider-group">
 
               <!-- Timer Pad / Solve Complete -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>⏱️ Timer & Solve Area</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Central solve & complete surface</div>
+                  <div data-i18n="trans.blockTimer">⏱️ Timer & Solve Area</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockTimerSub">Central solve & complete surface</div>
                 </div>
                 <input type="range" id="slider-opacity-timer" class="range-slider" min="0" max="100" value="60">
                 <span id="val-opacity-timer" class="slider-val-badge">60%</span>
@@ -464,8 +470,8 @@
               <!-- Solve History -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>📜 Solve History Sidebar</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">List of solves and sessions</div>
+                  <div data-i18n="trans.blockHistory">📜 Solve History Sidebar</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockHistorySub">List of solves and sessions</div>
                 </div>
                 <input type="range" id="slider-opacity-history" class="range-slider" min="0" max="100" value="65">
                 <span id="val-opacity-history" class="slider-val-badge">65%</span>
@@ -474,8 +480,8 @@
               <!-- Scramble Bar -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>🧩 Scramble & Net Bar</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Top scramble and 2D cube net</div>
+                  <div data-i18n="trans.blockScramble">🧩 Scramble & Net Bar</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockScrambleSub">Top scramble and 2D cube net</div>
                 </div>
                 <input type="range" id="slider-opacity-scramble" class="range-slider" min="0" max="100" value="55">
                 <span id="val-opacity-scramble" class="slider-val-badge">55%</span>
@@ -484,8 +490,8 @@
               <!-- Stats Summary Bar -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>📊 Stats Summary Bar</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Bottom Ao5, Ao12, best single</div>
+                  <div data-i18n="trans.blockStats">📊 Stats Summary Bar</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockStatsSub">Bottom Ao5, Ao12, best single</div>
                 </div>
                 <input type="range" id="slider-opacity-stats" class="range-slider" min="0" max="100" value="60">
                 <span id="val-opacity-stats" class="slider-val-badge">60%</span>
@@ -494,8 +500,8 @@
               <!-- Top Header -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>🧭 Top Navigation Header</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Logo and header buttons bar</div>
+                  <div data-i18n="trans.blockHeader">🧭 Top Navigation Header</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockHeaderSub">Logo and header buttons bar</div>
                 </div>
                 <input type="range" id="slider-opacity-header" class="range-slider" min="0" max="100" value="45">
                 <span id="val-opacity-header" class="slider-val-badge">45%</span>
@@ -504,8 +510,8 @@
               <!-- Card Border Opacity -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>🔲 Card Borders Visibility</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Glass border lines intensity</div>
+                  <div data-i18n="trans.blockBorder">🔲 Card Borders Visibility</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockBorderSub">Glass border lines intensity</div>
                 </div>
                 <input type="range" id="slider-opacity-border" class="range-slider" min="0" max="80" value="22">
                 <span id="val-opacity-border" class="slider-val-badge">22%</span>
@@ -514,8 +520,8 @@
               <!-- Card Glass Blur -->
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>❄️ Card Glass Blur (Frosted)</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Backdrop blur behind cards</div>
+                  <div data-i18n="trans.blockBlur">❄️ Card Glass Blur (Frosted)</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="trans.blockBlurSub">Backdrop blur behind cards</div>
                 </div>
                 <input type="range" id="slider-glass-blur" class="range-slider" min="0" max="32" value="16">
                 <span id="val-glass-blur" class="slider-val-badge">16px</span>
@@ -529,12 +535,12 @@
         <!-- TAB 4: ATMOSPHERE & DIM -->
         <div id="tab-panel-atmosphere" class="modal-tab-panel">
           <div>
-            <div class="modal-section-title">Atmospheric Filters</div>
+            <div class="modal-section-title" data-i18n="atm.filtersTitle">Atmospheric Filters</div>
             <div class="slider-group">
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>Wallpaper Brightness / Opacity</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Visibility of background media</div>
+                  <div data-i18n="atm.opacity">Wallpaper Brightness / Opacity</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="atm.opacitySub">Visibility of background media</div>
                 </div>
                 <input type="range" id="slider-wallpaper-opacity" class="range-slider" min="10" max="100" value="85">
                 <span id="val-wallpaper-opacity" class="slider-val-badge">85%</span>
@@ -542,8 +548,8 @@
 
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>Wallpaper Blur Effect</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Soft focus on background</div>
+                  <div data-i18n="atm.blur">Wallpaper Blur Effect</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="atm.blurSub">Soft focus on background</div>
                 </div>
                 <input type="range" id="slider-wallpaper-blur" class="range-slider" min="0" max="25" value="0">
                 <span id="val-wallpaper-blur" class="slider-val-badge">0px</span>
@@ -551,8 +557,8 @@
 
               <div class="slider-row">
                 <div class="slider-label">
-                  <div>Dark Overlay Tint</div>
-                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Darkens wallpaper for high text readability</div>
+                  <div data-i18n="atm.darkness">Dark Overlay Tint</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;" data-i18n="atm.darknessSub">Darkens wallpaper for high text readability</div>
                 </div>
                 <input type="range" id="slider-overlay-darkness" class="range-slider" min="0" max="90" value="45">
                 <span id="val-overlay-darkness" class="slider-val-badge">45%</span>
@@ -564,8 +570,8 @@
       </div>
 
       <div class="modal-footer">
-        <span style="font-size: 12px; color: var(--color-2);">Changes apply live in real-time and persist automatically.</span>
-        <button onclick="document.getElementById('wallpaper-modal').classList.remove('modal-visible')" class="btn btn-primary">Done</button>
+        <span style="font-size: 12px; color: var(--color-2);" data-i18n="wallpaper.savedNotice">Changes apply live in real-time and persist automatically.</span>
+        <button onclick="document.getElementById('wallpaper-modal').classList.remove('modal-visible')" class="btn btn-primary" data-i18n="modal.done">Done</button>
       </div>
     </div>
   </div>
@@ -576,7 +582,7 @@
   <div id="settings-modal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">⚙️ Speedcube Timer Settings</h3>
+        <h3 class="modal-title" data-i18n="settings.title">⚙️ Speedcube Timer Settings</h3>
         <button id="btn-close-settings" class="btn btn-icon">×</button>
       </div>
 
@@ -585,8 +591,8 @@
         <!-- WCA Inspection -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-title">WCA 15-Second Inspection</span>
-            <span class="setting-desc">Counts down 15s with voice/tone alert at 8s and 12s before starting</span>
+            <span class="setting-title" data-i18n="settings.inspectionTitle">WCA 15-Second Inspection</span>
+            <span class="setting-desc" data-i18n="settings.inspectionDesc">Counts down 15s with voice/tone alert at 8s and 12s before starting</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="toggle-inspection">
@@ -597,8 +603,8 @@
         <!-- Zen Mode -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-title">Zen Mode (Distraction-Free)</span>
-            <span class="setting-desc">Hides scramble bar, stats and sidebar while solving</span>
+            <span class="setting-title" data-i18n="settings.zenTitle">Zen Mode (Distraction-Free)</span>
+            <span class="setting-desc" data-i18n="settings.zenDesc">Hides scramble bar, stats and sidebar while solving</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="toggle-zen">
@@ -609,8 +615,8 @@
         <!-- Hide Time While Solving -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-title">Hide Clock While Solving</span>
-            <span class="setting-desc">Displays "Solving..." instead of running timer to reduce anxiety</span>
+            <span class="setting-title" data-i18n="settings.hideRunningTitle">Hide Clock While Solving</span>
+            <span class="setting-desc" data-i18n="settings.hideRunningDesc">Displays "Solving..." instead of running timer to reduce anxiety</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="toggle-hide-running">
@@ -621,8 +627,8 @@
         <!-- Sound Cues -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-title">Audio Synthesizer Cues</span>
-            <span class="setting-desc">Ready chime, mechanical clicks, inspection warning beeps, PB fanfare</span>
+            <span class="setting-title" data-i18n="settings.soundTitle">Audio Synthesizer Cues</span>
+            <span class="setting-desc" data-i18n="settings.soundDesc">Ready chime, mechanical clicks, inspection warning beeps, PB fanfare</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="toggle-sound" checked>
@@ -633,8 +639,8 @@
         <!-- Decimal places -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-title">Timer Precision</span>
-            <span class="setting-desc">Display milliseconds to 2 decimals (0.00) or 3 decimals (0.000)</span>
+            <span class="setting-title" data-i18n="settings.precisionTitle">Timer Precision</span>
+            <span class="setting-desc" data-i18n="settings.precisionDesc">Display milliseconds to 2 decimals (0.00) or 3 decimals (0.000)</span>
           </div>
           <select id="select-decimals" class="select-input" style="width: 110px;">
             <option value="2">2 (0.00)</option>
@@ -645,8 +651,8 @@
       </div>
 
       <div class="modal-footer">
-        <span style="font-size: 12px; color: var(--color-2);">Keyboard: [Space] Start/Stop, [Alt+N] Next, [Alt+Z] Zen</span>
-        <button onclick="document.getElementById('settings-modal').classList.remove('modal-visible')" class="btn btn-primary">Close</button>
+        <span style="font-size: 12px; color: var(--color-2);" data-i18n="settings.footerKbd">Keyboard: [Space] Start/Stop, [Alt+N] Next, [Alt+Z] Zen</span>
+        <button onclick="document.getElementById('settings-modal').classList.remove('modal-visible')" class="btn btn-primary" data-i18n="modal.close">Close</button>
       </div>
     </div>
   </div>
