@@ -62,6 +62,12 @@
           <span class="btn-text">Wallpaper</span>
         </button>
 
+        <!-- Block Transparency Shortcut -->
+        <button id="btn-open-transparency" class="btn" title="Customize Transparency of Blocks (Solve History, Timer, etc.)">
+          <span>🪟</span>
+          <span class="btn-text">Transparency</span>
+        </button>
+
         <!-- Quick Zen Mode Toggle -->
         <button id="btn-header-zen" class="btn btn-icon" title="Toggle Zen Distraction-Free Mode">
           🧘
@@ -282,74 +288,283 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- MODAL: WALLPAPER MANAGER (IMAGE, VIDEO, GIF)                      -->
+  <!-- MODAL: WALLPAPER & BLOCK TRANSPARENCY MANAGER                     -->
   <!-- ================================================================= -->
   <div id="wallpaper-modal" class="modal-overlay">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <h3 class="modal-title">🖼️ Wallpaper & Visual Atmosphere</h3>
         <button id="btn-close-wallpaper" class="btn btn-icon">×</button>
       </div>
 
+      <!-- NAVIGATION TABS -->
+      <div class="modal-tabs">
+        <button id="tab-btn-media" class="modal-tab-btn active" data-tab="media">
+          <span>🖼️</span> Wallpaper Source
+        </button>
+        <button id="tab-btn-position" class="modal-tab-btn" data-tab="position">
+          <span>🎯</span> Background Position
+        </button>
+        <button id="tab-btn-transparency" class="modal-tab-btn" data-tab="transparency">
+          <span>🪟</span> Block Transparency
+        </button>
+        <button id="tab-btn-atmosphere" class="modal-tab-btn" data-tab="atmosphere">
+          <span>✨</span> Atmosphere & Dim
+        </button>
+      </div>
+
       <div class="modal-body">
 
-        <!-- Local File Upload (Image, GIF, MP4/WebM Video) -->
-        <div>
-          <div class="modal-section-title">Upload Local Wallpaper (Image, GIF, Video)</div>
-          <div id="wallpaper-drop-area" class="drop-zone-box">
-            <div class="drop-icon">📁</div>
-            <div class="drop-text-main">Click or Drag & Drop File Here</div>
-            <div class="drop-text-sub">Supports .PNG, .JPG, .WEBP, animated .GIF, .MP4, .WEBM video</div>
-            <input type="file" id="wallpaper-file-input" accept="image/*,video/mp4,video/webm" style="display: none;">
+        <!-- TAB 1: WALLPAPER SOURCE -->
+        <div id="tab-panel-media" class="modal-tab-panel active">
+          <!-- Local File Upload (Image, GIF, MP4/WebM Video) -->
+          <div>
+            <div class="modal-section-title">Upload Local Wallpaper (Image, GIF, Video)</div>
+            <div id="wallpaper-drop-area" class="drop-zone-box">
+              <div class="drop-icon">📁</div>
+              <div class="drop-text-main">Click or Drag & Drop File Here</div>
+              <div class="drop-text-sub">Supports .PNG, .JPG, .WEBP, animated .GIF, .MP4, .WEBM video</div>
+              <input type="file" id="wallpaper-file-input" accept="image/*,video/mp4,video/webm" style="display: none;">
+            </div>
+          </div>
+
+          <!-- Direct Web URL Input -->
+          <div>
+            <div class="modal-section-title">Or Apply via Direct Web URL</div>
+            <div class="url-input-group">
+              <select id="wallpaper-url-type" class="select-input" style="width: 120px;">
+                <option value="image">Image / GIF</option>
+                <option value="video">MP4 Video</option>
+              </select>
+              <input type="text" id="wallpaper-url-input" class="text-input" placeholder="https://example.com/wallpaper.gif or .mp4">
+              <button id="btn-apply-wallpaper-url" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+
+          <!-- Built-in Wallpaper Presets -->
+          <div>
+            <div class="modal-section-title">Built-In Dynamic Presets</div>
+            <div id="wallpaper-presets-grid" class="wallpaper-presets-grid"></div>
           </div>
         </div>
 
-        <!-- Direct Web URL Input -->
-        <div>
-          <div class="modal-section-title">Or Apply via Direct Web URL</div>
-          <div class="url-input-group">
-            <select id="wallpaper-url-type" class="select-input" style="width: 110px;">
-              <option value="image">Image / GIF</option>
-              <option value="video">MP4 Video</option>
-            </select>
-            <input type="text" id="wallpaper-url-input" class="text-input" placeholder="https://example.com/wallpaper.gif or .mp4">
-            <button id="btn-apply-wallpaper-url" class="btn btn-primary">Apply</button>
-          </div>
-        </div>
-
-        <!-- Wallpaper Fine Tuning Sliders -->
-        <div>
-          <div class="modal-section-title">Atmosphere & Glass Adjustments</div>
-          <div class="slider-group">
-            <div class="slider-row">
-              <span class="slider-label">Wallpaper Opacity</span>
-              <input type="range" id="slider-wallpaper-opacity" class="range-slider" min="10" max="100" value="85">
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Wallpaper Blur</span>
-              <input type="range" id="slider-wallpaper-blur" class="range-slider" min="0" max="25" value="0">
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Dark Overlay Tint</span>
-              <input type="range" id="slider-overlay-darkness" class="range-slider" min="0" max="90" value="45">
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Card Glass Blur</span>
-              <input type="range" id="slider-glass-blur" class="range-slider" min="4" max="32" value="16">
+        <!-- TAB 2: BACKGROUND POSITION & FRAMING -->
+        <div id="tab-panel-position" class="modal-tab-panel">
+          
+          <!-- 9-Point Alignment Grid -->
+          <div>
+            <div class="modal-section-title">Quick Alignment Grid</div>
+            <div class="position-grid-container">
+              <div class="position-grid">
+                <button class="btn-pos-grid" data-pos-x="0" data-pos-y="0" title="Top Left">↖</button>
+                <button class="btn-pos-grid" data-pos-x="50" data-pos-y="0" title="Top Center">↑</button>
+                <button class="btn-pos-grid" data-pos-x="100" data-pos-y="0" title="Top Right">↗</button>
+                <button class="btn-pos-grid" data-pos-x="0" data-pos-y="50" title="Center Left">←</button>
+                <button class="btn-pos-grid active" data-pos-x="50" data-pos-y="50" title="Center">🎯</button>
+                <button class="btn-pos-grid" data-pos-x="100" data-pos-y="50" title="Center Right">→</button>
+                <button class="btn-pos-grid" data-pos-x="0" data-pos-y="100" title="Bottom Left">↙</button>
+                <button class="btn-pos-grid" data-pos-x="50" data-pos-y="100" title="Bottom Center">↓</button>
+                <button class="btn-pos-grid" data-pos-x="100" data-pos-y="100" title="Bottom Right">↘</button>
+              </div>
+              <div class="position-grid-meta">
+                <div class="position-grid-title">Align Focus Area</div>
+                <div class="position-grid-desc">Click any anchor arrow to instantly pan your wallpaper or video towards that section.</div>
+                <button id="btn-reset-bg-pos" class="btn" style="align-self: flex-start; padding: 4px 10px; font-size: 12px; margin-top: 4px;">↺ Center & Reset</button>
+              </div>
             </div>
           </div>
+
+          <!-- Position Sliders -->
+          <div>
+            <div class="modal-section-title">Fine Position & Scale</div>
+            <div class="slider-group">
+              
+              <!-- Fit Mode -->
+              <div class="slider-row">
+                <span class="slider-label">Display Fit Mode</span>
+                <select id="select-bg-fit" class="select-input" style="flex: 1;">
+                  <option value="cover" selected>Cover (Fill entire screen, crop edges)</option>
+                  <option value="contain">Contain (Fit full image inside screen)</option>
+                  <option value="fill">Fill (Stretch to fit)</option>
+                </select>
+              </div>
+
+              <!-- Position X -->
+              <div class="slider-row">
+                <span class="slider-label">Horizontal Position (X)</span>
+                <input type="range" id="slider-bg-pos-x" class="range-slider" min="0" max="100" value="50">
+                <span id="val-bg-pos-x" class="slider-val-badge">50%</span>
+              </div>
+
+              <!-- Position Y -->
+              <div class="slider-row">
+                <span class="slider-label">Vertical Position (Y)</span>
+                <input type="range" id="slider-bg-pos-y" class="range-slider" min="0" max="100" value="50">
+                <span id="val-bg-pos-y" class="slider-val-badge">50%</span>
+              </div>
+
+              <!-- Zoom / Scale -->
+              <div class="slider-row">
+                <span class="slider-label">Wallpaper Zoom / Scale</span>
+                <input type="range" id="slider-bg-scale" class="range-slider" min="50" max="250" value="100">
+                <span id="val-bg-scale" class="slider-val-badge">100%</span>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
-        <!-- Built-in Wallpaper Presets -->
-        <div>
-          <div class="modal-section-title">Built-In Dynamic Presets</div>
-          <div id="wallpaper-presets-grid" class="wallpaper-presets-grid"></div>
+        <!-- TAB 3: BLOCK TRANSPARENCY & GLASS -->
+        <div id="tab-panel-transparency" class="modal-tab-panel">
+
+          <!-- Presets -->
+          <div>
+            <div class="modal-section-title">Quick Transparency Presets</div>
+            <div class="preset-pill-group">
+              <button class="btn-preset-pill" data-trans-preset="ghost">
+                <span>👻</span> Pure Crystal Ghost (15% Solid)
+              </button>
+              <button class="btn-preset-pill active" data-trans-preset="balanced">
+                <span>💎</span> Balanced Glass (60% Solid)
+              </button>
+              <button class="btn-preset-pill" data-trans-preset="solid">
+                <span>⬛</span> High Contrast Solid (90% Solid)
+              </button>
+            </div>
+          </div>
+
+          <!-- Master Global Slider -->
+          <div class="block-transparency-card">
+            <div class="block-transparency-item">
+              <div class="block-transparency-header">
+                <span class="block-item-name" style="font-size: 14px; font-weight: 700;">🌐 Master Global Cards Transparency</span>
+                <span id="val-opacity-global" class="slider-val-badge">65%</span>
+              </div>
+              <input type="range" id="slider-opacity-global" class="range-slider" min="0" max="100" value="65">
+              <span class="block-item-desc">Adjusts opacity across all panels simultaneously. Set to 0% for pure transparent glass.</span>
+            </div>
+          </div>
+
+          <!-- Individual Block Sliders -->
+          <div>
+            <div class="modal-section-title">Individual Block Transparency</div>
+            <div class="slider-group">
+
+              <!-- Timer Pad / Solve Complete -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>⏱️ Timer & Solve Area</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Central solve & complete surface</div>
+                </div>
+                <input type="range" id="slider-opacity-timer" class="range-slider" min="0" max="100" value="60">
+                <span id="val-opacity-timer" class="slider-val-badge">60%</span>
+              </div>
+
+              <!-- Solve History -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>📜 Solve History Sidebar</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">List of solves and sessions</div>
+                </div>
+                <input type="range" id="slider-opacity-history" class="range-slider" min="0" max="100" value="65">
+                <span id="val-opacity-history" class="slider-val-badge">65%</span>
+              </div>
+
+              <!-- Scramble Bar -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>🧩 Scramble & Net Bar</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Top scramble and 2D cube net</div>
+                </div>
+                <input type="range" id="slider-opacity-scramble" class="range-slider" min="0" max="100" value="55">
+                <span id="val-opacity-scramble" class="slider-val-badge">55%</span>
+              </div>
+
+              <!-- Stats Summary Bar -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>📊 Stats Summary Bar</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Bottom Ao5, Ao12, best single</div>
+                </div>
+                <input type="range" id="slider-opacity-stats" class="range-slider" min="0" max="100" value="60">
+                <span id="val-opacity-stats" class="slider-val-badge">60%</span>
+              </div>
+
+              <!-- Top Header -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>🧭 Top Navigation Header</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Logo and header buttons bar</div>
+                </div>
+                <input type="range" id="slider-opacity-header" class="range-slider" min="0" max="100" value="45">
+                <span id="val-opacity-header" class="slider-val-badge">45%</span>
+              </div>
+
+              <!-- Card Border Opacity -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>🔲 Card Borders Visibility</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Glass border lines intensity</div>
+                </div>
+                <input type="range" id="slider-opacity-border" class="range-slider" min="0" max="80" value="22">
+                <span id="val-opacity-border" class="slider-val-badge">22%</span>
+              </div>
+
+              <!-- Card Glass Blur -->
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>❄️ Card Glass Blur (Frosted)</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Backdrop blur behind cards</div>
+                </div>
+                <input type="range" id="slider-glass-blur" class="range-slider" min="0" max="32" value="16">
+                <span id="val-glass-blur" class="slider-val-badge">16px</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 4: ATMOSPHERE & DIM -->
+        <div id="tab-panel-atmosphere" class="modal-tab-panel">
+          <div>
+            <div class="modal-section-title">Atmospheric Filters</div>
+            <div class="slider-group">
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>Wallpaper Brightness / Opacity</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Visibility of background media</div>
+                </div>
+                <input type="range" id="slider-wallpaper-opacity" class="range-slider" min="10" max="100" value="85">
+                <span id="val-wallpaper-opacity" class="slider-val-badge">85%</span>
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>Wallpaper Blur Effect</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Soft focus on background</div>
+                </div>
+                <input type="range" id="slider-wallpaper-blur" class="range-slider" min="0" max="25" value="0">
+                <span id="val-wallpaper-blur" class="slider-val-badge">0px</span>
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-label">
+                  <div>Dark Overlay Tint</div>
+                  <div style="font-size: 11px; color: var(--color-2); font-weight: normal;">Darkens wallpaper for high text readability</div>
+                </div>
+                <input type="range" id="slider-overlay-darkness" class="range-slider" min="0" max="90" value="45">
+                <span id="val-overlay-darkness" class="slider-val-badge">45%</span>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
 
       <div class="modal-footer">
-        <span style="font-size: 12px; color: var(--color-2);">Uploaded wallpapers are preserved in IndexedDB storage.</span>
+        <span style="font-size: 12px; color: var(--color-2);">Changes apply live in real-time and persist automatically.</span>
         <button onclick="document.getElementById('wallpaper-modal').classList.remove('modal-visible')" class="btn btn-primary">Done</button>
       </div>
     </div>

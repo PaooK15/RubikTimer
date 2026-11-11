@@ -1,12 +1,14 @@
 /**
  * wallpaper.js
- * Comprehensive wallpaper manager supporting:
+ * Comprehensive wallpaper & UI transparency manager supporting:
  * - Images (.jpg, .jpeg, .png, .webp, .svg)
  * - Animated GIFs (.gif)
  * - Videos (.mp4, .webm)
  * - Local file uploads (saved via IndexedDB)
  * - Remote web URLs
  * - Built-in high-aesthetic presets (Canvas animated stars/cubes, gradients, curated wallpapers)
+ * - Background Framing & Positioning (Position X, Position Y, Zoom/Scale, Fit modes, 9-point grid)
+ * - Block Transparency controls: Solve History, Timer Pad (Solve Complete), Scramble bar, Stats bar, Header
  * - Granular visual adjustments: Opacity, Blur, Overlay Tint, Glass card blur
  */
 
@@ -70,8 +72,25 @@ class WallpaperManager {
       opacity: 85,                // 0 to 100%
       blur: 0,                    // 0 to 25px
       overlayDarkness: 45,        // 0 to 90%
-      glassBlur: 16,              // 4 to 32px
-      glassOpacity: 70            // 20 to 95%
+      glassBlur: 16,              // 0 to 32px
+      glassOpacity: 70,           // legacy
+
+      // Background Framing & Position
+      posX: 50,                   // 0 to 100% (horizontal center)
+      posY: 50,                   // 0 to 100% (vertical center)
+      scale: 100,                 // 50 to 250% (zoom)
+      fit: 'cover',               // 'cover' | 'contain' | 'fill'
+
+      // Block Transparencies (0 = fully see-through, 100 = fully opaque)
+      blockTransparency: {
+        global: 65,
+        timerPad: 60,             // Timer / Solve complete central surface
+        solveHistory: 65,         // Solve history sidebar
+        scrambleBar: 55,          // Scramble & 2D net bar
+        statsBar: 60,             // Bottom statistics bar
+        header: 45,               // Top navigation header
+        borderOpacity: 22         // Glass borders
+      }
     };
 
     this.storageKey = 'rubik_timer_wallpaper_settings';
@@ -85,11 +104,19 @@ class WallpaperManager {
     // Load saved settings
     const saved = storage.getJSON(this.storageKey);
     if (saved) {
-      this.settings = { ...this.settings, ...saved };
+      this.settings = {
+        ...this.settings,
+        ...saved,
+        blockTransparency: {
+          ...this.settings.blockTransparency,
+          ...(saved.blockTransparency || {})
+        }
+      };
     }
 
-    // Apply visual filters (opacity, blur, overlay)
+    // Apply visual filters and block transparencies
     this.applyFilters();
+    this.applyBlockTransparencies();
 
     // Check if custom uploaded wallpaper exists in IndexedDB
     if (this.settings.source === 'upload') {
@@ -137,6 +164,7 @@ class WallpaperManager {
     img.alt = 'Custom Wallpaper';
     img.loading = 'eager';
     this.mediaContainer.appendChild(img);
+    this.applyMediaPosition();
   }
 
   // Render background video (.mp4, .webm)
@@ -158,6 +186,7 @@ class WallpaperManager {
     });
 
     this.mediaContainer.appendChild(video);
+    this.applyMediaPosition();
   }
 
   // Render interactive floating 3D cube particle canvas
@@ -379,6 +408,146 @@ class WallpaperManager {
     this.renderCurrentWallpaper();
   }
 
+  // =====================================================================
+  // BACKGROUND POSITION & FRAMING CONTROLS
+  // =====================================================================
+  setPosition(x, y) {
+    this.settings.posX = Math.max(0, Math.min(100, Number(x)));
+    this.settings.posY = Math.max(0, Math.min(100, Number(y)));
+    this.applyMediaPosition();
+    this.saveSettings();
+  }
+
+  setPositionX(x) {
+    this.settings.posX = Math.max(0, Math.min(100, Number(x)));
+    this.applyMediaPosition();
+    this.saveSettings();
+  }
+
+  setPositionY(y) {
+    this.settings.posY = Math.max(0, Math.min(100, Number(y)));
+    this.applyMediaPosition();
+    this.saveSettings();
+  }
+
+  setScale(scale) {
+    this.settings.scale = Math.max(50, Math.min(300, Number(scale)));
+    this.applyMediaPosition();
+    this.saveSettings();
+  }
+
+  setFit(fit) {
+    this.settings.fit = ['cover', 'contain', 'fill'].includes(fit) ? fit : 'cover';
+    this.applyMediaPosition();
+    this.saveSettings();
+  }
+
+  resetPosition() {
+    this.settings.posX = 50;
+    this.settings.posY = 50;
+    this.settings.scale = 100;
+    this.settings.fit = 'cover';
+    this.applyMediaPosition();
+    this.saveSettings();
+    return { posX: 50, posY: 50, scale: 100, fit: 'cover' };
+  }
+
+  // Apply object-position, object-fit and scale transforms to active media elements
+  applyMediaPosition() {
+    if (!this.mediaContainer) return;
+    const elements = this.mediaContainer.querySelectorAll('.wallpaper-media-element');
+    elements.forEach(el => {
+      if (el.tagName === 'IMG' || el.tagName === 'VIDEO') {
+        el.style.objectPosition = `${this.settings.posX}% ${this.settings.posY}%`;
+        el.style.objectFit = this.settings.fit || 'cover';
+        el.style.transform = `scale(${this.settings.scale / 100})`;
+        el.style.transformOrigin = `${this.settings.posX}% ${this.settings.posY}%`;
+        el.style.transition = 'transform 0.1s ease-out, object-position 0.1s ease-out';
+      }
+    });
+  }
+
+  // =====================================================================
+  // BLOCK TRANSPARENCY & GLASS CONTROLS
+  // =====================================================================
+  setBlockTransparency(key, val) {
+    const num = Math.max(0, Math.min(100, Number(val)));
+    if (this.settings.blockTransparency && this.settings.blockTransparency[key] !== undefined) {
+      this.settings.blockTransparency[key] = num;
+
+      // If updating master global slider, adjust all blocks
+      if (key === 'global') {
+        this.settings.blockTransparency.timerPad = num;
+        this.settings.blockTransparency.solveHistory = num;
+        this.settings.blockTransparency.scrambleBar = Math.max(0, num - 10);
+        this.settings.blockTransparency.statsBar = num;
+        this.settings.blockTransparency.header = Math.max(0, num - 15);
+      }
+
+      this.applyBlockTransparencies();
+      this.saveSettings();
+    }
+  }
+
+  applyBlockTransparencies() {
+    const root = document.documentElement;
+    const bt = this.settings.blockTransparency;
+    if (!bt) return;
+
+    root.style.setProperty('--opacity-global', `${bt.global / 100}`);
+    root.style.setProperty('--opacity-timer-pad', `${bt.timerPad / 100}`);
+    root.style.setProperty('--opacity-solve-history', `${bt.solveHistory / 100}`);
+    root.style.setProperty('--opacity-scramble-bar', `${bt.scrambleBar / 100}`);
+    root.style.setProperty('--opacity-stats-bar', `${bt.statsBar / 100}`);
+    root.style.setProperty('--opacity-header', `${bt.header / 100}`);
+    root.style.setProperty('--border-opacity', `${bt.borderOpacity / 100}`);
+  }
+
+  setTransparencyPreset(presetName) {
+    if (presetName === 'ghost') {
+      // High transparency / crystal clear
+      this.settings.blockTransparency = {
+        global: 15,
+        timerPad: 15,
+        solveHistory: 20,
+        scrambleBar: 15,
+        statsBar: 15,
+        header: 20,
+        borderOpacity: 15
+      };
+      this.settings.glassBlur = 8;
+    } else if (presetName === 'solid') {
+      // High contrast solid
+      this.settings.blockTransparency = {
+        global: 90,
+        timerPad: 90,
+        solveHistory: 92,
+        scrambleBar: 88,
+        statsBar: 90,
+        header: 85,
+        borderOpacity: 35
+      };
+      this.settings.glassBlur = 20;
+    } else {
+      // Balanced glass default
+      this.settings.blockTransparency = {
+        global: 65,
+        timerPad: 60,
+        solveHistory: 65,
+        scrambleBar: 55,
+        statsBar: 60,
+        header: 45,
+        borderOpacity: 22
+      };
+      this.settings.glassBlur = 16;
+    }
+
+    this.applyBlockTransparencies();
+    this.applyFilters();
+    this.saveSettings();
+    return this.settings.blockTransparency;
+  }
+
   // Update visual filters live (Opacity, Blur, Overlay tint, Glass card blur)
   applyFilters() {
     if (!this.mediaContainer || !this.overlayElement) return;
@@ -396,6 +565,10 @@ class WallpaperManager {
     // Apply glass card styling to CSS variables
     root.style.setProperty('--glass-blur', `${this.settings.glassBlur}px`);
     root.style.setProperty('--glass-opacity', `${this.settings.glassOpacity / 100}`);
+    
+    // Also re-apply position & block transparencies
+    this.applyMediaPosition();
+    this.applyBlockTransparencies();
   }
 
   setOpacity(val) {
@@ -418,12 +591,6 @@ class WallpaperManager {
 
   setGlassBlur(val) {
     this.settings.glassBlur = Math.max(0, Math.min(40, Number(val)));
-    this.applyFilters();
-    this.saveSettings();
-  }
-
-  setGlassOpacity(val) {
-    this.settings.glassOpacity = Math.max(10, Math.min(100, Number(val)));
     this.applyFilters();
     this.saveSettings();
   }

@@ -49,11 +49,41 @@ Transform the solving atmosphere with flexible wallpaper options:
    - **Cyberpunk Grid**: Electric grid lines.
    - **Cosmic Nebula**: Deep space constellation.
    - **Minimalist Slate**: Pure distraction-free dark background.
-4. **Visual Atmospheric Controls**:
-   - **Wallpaper Opacity Slider** (10% - 100%)
-   - **Wallpaper Blur Slider** (0px - 25px)
-   - **Overlay Darkness Slider** (0% - 90%)
-   - **Glass Card Blur Slider** (4px - 32px)
+
+---
+
+## 🎯 Background Positioning & Framing
+
+Easily pan, zoom, and frame any wallpaper or video:
+- **9-Point Visual Alignment Grid**: Instant 1-click anchors (`Top-Left`, `Top`, `Top-Right`, `Left`, `Center`, `Right`, `Bottom-Left`, `Bottom`, `Bottom-Right`).
+- **Horizontal Position (X) Slider**: 0% to 100% fine panning.
+- **Vertical Position (Y) Slider**: 0% to 100% fine panning.
+- **Wallpaper Zoom / Scale Slider**: 50% to 250% scaling.
+- **Display Fit Modes**:
+  - `Cover`: Fill entire viewport (crops edges).
+  - `Contain`: Fit full image without clipping.
+  - `Fill`: Stretch to viewport.
+- **Reset Button**: Restores original center framing (50%, 50%, 100% scale).
+
+---
+
+## 🪟 Block Transparency & Glassmorphism
+
+Customize the transparency / opacity of individual UI cards or all cards together:
+- **Direct Header Shortcut**: Click the `🪟 Transparency` button in the top navigation.
+- **Master Global Cards Slider**: Adjust opacity across all panels simultaneously (0% = crystal see-through, 100% = solid).
+- **Individual Block Sliders**:
+  - ⏱️ **Timer & Solve Complete Area**: Control central timer pad transparency.
+  - 📜 **Solve History Sidebar**: Control solve list and session panel transparency.
+  - 🧩 **Scramble & Net Bar**: Control top scramble and 2D net bar transparency.
+  - 📊 **Stats Summary Bar**: Control bottom statistics bar transparency.
+  - 🧭 **Top Header Navigation**: Control top navbar transparency.
+  - 🔲 **Card Border Visibility**: Adjust glass border lines intensity (0% to 80%).
+  - ❄️ **Card Glass Blur**: Adjust frosted glass backdrop filter (0px to 32px).
+- **Quick Transparency Presets**:
+  - **👻 Pure Crystal Ghost (15%)**: Ultra see-through, perfect for viewing animated video and gif wallpapers.
+  - **💎 Balanced Glass (60%)**: Default optimal glass aesthetic.
+  - **⬛ High Contrast Solid (90%)**: High contrast for competitive zero-bleed solving.
 
 ---
 

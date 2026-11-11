@@ -16,13 +16,22 @@
   --color-4: #2F66C1;
   --color-5: #173A75;
 
+  /* Block Transparency & Opacity Variables */
+  --opacity-global: 0.65;
+  --opacity-timer-pad: 0.60;
+  --opacity-solve-history: 0.65;
+  --opacity-scramble-bar: 0.55;
+  --opacity-stats-bar: 0.60;
+  --opacity-header: 0.45;
+  --border-opacity: 0.22;
+
   /* Glassmorphism & UI Dynamics */
   --glass-blur: 16px;
   --glass-opacity: 0.75;
   --glass-bg: rgba(23, 58, 117, 0.45);
   --glass-card: rgba(15, 30, 65, 0.65);
-  --glass-border: rgba(183, 207, 240, 0.22);
-  --glass-border-hover: rgba(183, 207, 240, 0.45);
+  --glass-border: rgba(183, 207, 240, var(--border-opacity));
+  --glass-border-hover: rgba(183, 207, 240, calc(var(--border-opacity) * 1.8));
   --glass-shadow: 0 8px 32px 0 rgba(10, 18, 38, 0.4);
 
   /* Typography */
@@ -154,10 +163,11 @@ html, body {
   justify-content: space-between;
   padding: 0 24px;
   border-bottom: 1px solid var(--glass-border);
-  background: rgba(15, 30, 65, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: rgba(15, 30, 65, var(--opacity-header));
+  background: color-mix(in srgb, var(--color-5) calc(var(--opacity-header) * 100%), transparent);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
 }
 
 .brand-section {

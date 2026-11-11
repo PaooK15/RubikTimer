@@ -321,10 +321,11 @@ class SpeedcubeApp {
     }
   }
 
-  // Wallpaper UI & File / URL Controls
+  // Wallpaper UI & File / URL / Position & Block Transparency Controls
   setupWallpaperUI() {
     const modal = document.getElementById('wallpaper-modal');
     const openBtn = document.getElementById('btn-open-wallpaper');
+    const openTransBtn = document.getElementById('btn-open-transparency');
     const closeBtn = document.getElementById('btn-close-wallpaper');
 
     const fileInput = document.getElementById('wallpaper-file-input');
@@ -333,39 +334,219 @@ class SpeedcubeApp {
     const applyUrlBtn = document.getElementById('btn-apply-wallpaper-url');
     const urlTypeSelect = document.getElementById('wallpaper-url-type');
 
-    // Sliders
-    const opacitySlider = document.getElementById('slider-wallpaper-opacity');
-    const blurSlider = document.getElementById('slider-wallpaper-blur');
-    const darknessSlider = document.getElementById('slider-overlay-darkness');
-    const glassBlurSlider = document.getElementById('slider-glass-blur');
+    // Tab Switching Logic
+    const tabBtns = modal.querySelectorAll('.modal-tab-btn');
+    const tabPanels = modal.querySelectorAll('.modal-tab-panel');
+    const switchTab = (tabId) => {
+      tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
+      tabPanels.forEach(panel => panel.classList.toggle('active', panel.id === `tab-panel-${tabId}`));
+    };
 
-    const presetsContainer = document.getElementById('wallpaper-presets-grid');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
 
-    if (openBtn) openBtn.addEventListener('click', () => this.openModal(modal));
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        this.openModal(modal);
+        switchTab('media');
+      });
+    }
+
+    if (openTransBtn) {
+      openTransBtn.addEventListener('click', () => {
+        this.openModal(modal);
+        switchTab('transparency');
+      });
+    }
+
     if (closeBtn) closeBtn.addEventListener('click', () => this.closeModal(modal));
 
-    // Initialize slider values from current settings
+    // Helper to bind range slider with live badge
+    const bindSlider = (sliderId, badgeId, onChange, unit = '%') => {
+      const slider = document.getElementById(sliderId);
+      const badge = document.getElementById(badgeId);
+      if (!slider) return null;
+
+      const updateBadge = (v) => {
+        if (badge) badge.textContent = `${v}${unit}`;
+      };
+
+      slider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        updateBadge(val);
+        onChange(val);
+      });
+
+      return { slider, updateBadge };
+    };
+
     const currentSettings = wallpaperManager.getSettings();
-    if (opacitySlider) opacitySlider.value = currentSettings.opacity;
-    if (blurSlider) blurSlider.value = currentSettings.blur;
-    if (darknessSlider) darknessSlider.value = currentSettings.overlayDarkness;
-    if (glassBlurSlider) glassBlurSlider.value = currentSettings.glassBlur;
+    const bt = currentSettings.blockTransparency || {};
 
-    // Slider change listeners
-    if (opacitySlider) {
-      opacitySlider.addEventListener('input', (e) => wallpaperManager.setOpacity(e.target.value));
-    }
-    if (blurSlider) {
-      blurSlider.addEventListener('input', (e) => wallpaperManager.setBlur(e.target.value));
-    }
-    if (darknessSlider) {
-      darknessSlider.addEventListener('input', (e) => wallpaperManager.setOverlayDarkness(e.target.value));
-    }
-    if (glassBlurSlider) {
-      glassBlurSlider.addEventListener('input', (e) => wallpaperManager.setGlassBlur(e.target.value));
+    // =====================================================================
+    // 1. BACKGROUND POSITION & FRAMING
+    // =====================================================================
+    const posXCtrl = bindSlider('slider-bg-pos-x', 'val-bg-pos-x', (v) => {
+      wallpaperManager.setPositionX(v);
+      updateGridActive(v, currentSettings.posY);
+    });
+    if (posXCtrl) posXCtrl.slider.value = currentSettings.posX || 50;
+
+    const posYCtrl = bindSlider('slider-bg-pos-y', 'val-bg-pos-y', (v) => {
+      wallpaperManager.setPositionY(v);
+      updateGridActive(currentSettings.posX, v);
+    });
+    if (posYCtrl) posYCtrl.slider.value = currentSettings.posY || 50;
+
+    const scaleCtrl = bindSlider('slider-bg-scale', 'val-bg-scale', (v) => {
+      wallpaperManager.setScale(v);
+    });
+    if (scaleCtrl) scaleCtrl.slider.value = currentSettings.scale || 100;
+
+    const fitSelect = document.getElementById('select-bg-fit');
+    if (fitSelect) {
+      fitSelect.value = currentSettings.fit || 'cover';
+      fitSelect.addEventListener('change', (e) => {
+        wallpaperManager.setFit(e.target.value);
+      });
     }
 
-    // Local file upload
+    // 9-point grid buttons
+    const gridBtns = modal.querySelectorAll('.btn-pos-grid');
+    const updateGridActive = (x, y) => {
+      gridBtns.forEach(btn => {
+        const bx = Number(btn.dataset.posX);
+        const by = Number(btn.dataset.posY);
+        const match = Math.abs(bx - x) <= 15 && Math.abs(by - y) <= 15;
+        btn.classList.toggle('active', match);
+      });
+    };
+
+    gridBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const x = Number(btn.dataset.posX);
+        const y = Number(btn.dataset.posY);
+        wallpaperManager.setPosition(x, y);
+
+        if (posXCtrl) {
+          posXCtrl.slider.value = x;
+          posXCtrl.updateBadge(x);
+        }
+        if (posYCtrl) {
+          posYCtrl.slider.value = y;
+          posYCtrl.updateBadge(y);
+        }
+
+        gridBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.showToast(`Background aligned to ${btn.title}`);
+      });
+    });
+
+    const resetBgPosBtn = document.getElementById('btn-reset-bg-pos');
+    if (resetBgPosBtn) {
+      resetBgPosBtn.addEventListener('click', () => {
+        const def = wallpaperManager.resetPosition();
+        if (posXCtrl) { posXCtrl.slider.value = def.posX; posXCtrl.updateBadge(def.posX); }
+        if (posYCtrl) { posYCtrl.slider.value = def.posY; posYCtrl.updateBadge(def.posY); }
+        if (scaleCtrl) { scaleCtrl.slider.value = def.scale; scaleCtrl.updateBadge(def.scale); }
+        if (fitSelect) fitSelect.value = def.fit;
+        updateGridActive(50, 50);
+        this.showToast('Background framing centered and reset.');
+      });
+    }
+
+    // =====================================================================
+    // 2. BLOCK TRANSPARENCY CONTROLS
+    // =====================================================================
+    const globalTransCtrl = bindSlider('slider-opacity-global', 'val-opacity-global', (v) => {
+      wallpaperManager.setBlockTransparency('global', v);
+      syncTransparencySliders();
+    });
+    if (globalTransCtrl) globalTransCtrl.slider.value = bt.global !== undefined ? bt.global : 65;
+
+    const timerPadCtrl = bindSlider('slider-opacity-timer', 'val-opacity-timer', (v) => {
+      wallpaperManager.setBlockTransparency('timerPad', v);
+    });
+    if (timerPadCtrl) timerPadCtrl.slider.value = bt.timerPad !== undefined ? bt.timerPad : 60;
+
+    const historyCtrl = bindSlider('slider-opacity-history', 'val-opacity-history', (v) => {
+      wallpaperManager.setBlockTransparency('solveHistory', v);
+    });
+    if (historyCtrl) historyCtrl.slider.value = bt.solveHistory !== undefined ? bt.solveHistory : 65;
+
+    const scrambleCtrl = bindSlider('slider-opacity-scramble', 'val-opacity-scramble', (v) => {
+      wallpaperManager.setBlockTransparency('scrambleBar', v);
+    });
+    if (scrambleCtrl) scrambleCtrl.slider.value = bt.scrambleBar !== undefined ? bt.scrambleBar : 55;
+
+    const statsCtrl = bindSlider('slider-opacity-stats', 'val-opacity-stats', (v) => {
+      wallpaperManager.setBlockTransparency('statsBar', v);
+    });
+    if (statsCtrl) statsCtrl.slider.value = bt.statsBar !== undefined ? bt.statsBar : 60;
+
+    const headerCtrl = bindSlider('slider-opacity-header', 'val-opacity-header', (v) => {
+      wallpaperManager.setBlockTransparency('header', v);
+    });
+    if (headerCtrl) headerCtrl.slider.value = bt.header !== undefined ? bt.header : 45;
+
+    const borderCtrl = bindSlider('slider-opacity-border', 'val-opacity-border', (v) => {
+      wallpaperManager.setBlockTransparency('borderOpacity', v);
+    });
+    if (borderCtrl) borderCtrl.slider.value = bt.borderOpacity !== undefined ? bt.borderOpacity : 22;
+
+    const glassBlurCtrl = bindSlider('slider-glass-blur', 'val-glass-blur', (v) => {
+      wallpaperManager.setGlassBlur(v);
+    }, 'px');
+    if (glassBlurCtrl) glassBlurCtrl.slider.value = currentSettings.glassBlur || 16;
+
+    const syncTransparencySliders = () => {
+      const cur = wallpaperManager.getSettings();
+      const b = cur.blockTransparency || {};
+      if (timerPadCtrl) { timerPadCtrl.slider.value = b.timerPad; timerPadCtrl.updateBadge(b.timerPad); }
+      if (historyCtrl) { historyCtrl.slider.value = b.solveHistory; historyCtrl.updateBadge(b.solveHistory); }
+      if (scrambleCtrl) { scrambleCtrl.slider.value = b.scrambleBar; scrambleCtrl.updateBadge(b.scrambleBar); }
+      if (statsCtrl) { statsCtrl.slider.value = b.statsBar; statsCtrl.updateBadge(b.statsBar); }
+      if (headerCtrl) { headerCtrl.slider.value = b.header; headerCtrl.updateBadge(b.header); }
+      if (borderCtrl) { borderCtrl.slider.value = b.borderOpacity; borderCtrl.updateBadge(b.borderOpacity); }
+      if (globalTransCtrl) { globalTransCtrl.slider.value = b.global; globalTransCtrl.updateBadge(b.global); }
+      if (glassBlurCtrl) { glassBlurCtrl.slider.value = cur.glassBlur; glassBlurCtrl.updateBadge(cur.glassBlur); }
+    };
+
+    // Transparency Preset Pills
+    const presetPills = modal.querySelectorAll('.btn-preset-pill');
+    presetPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        presetPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        wallpaperManager.setTransparencyPreset(pill.dataset.transPreset);
+        syncTransparencySliders();
+        this.showToast(`Applied ${pill.textContent.trim()} mode!`);
+      });
+    });
+
+    // =====================================================================
+    // 3. ATMOSPHERE & FILTERS
+    // =====================================================================
+    const opacityCtrl = bindSlider('slider-wallpaper-opacity', 'val-wallpaper-opacity', (v) => {
+      wallpaperManager.setOpacity(v);
+    });
+    if (opacityCtrl) opacityCtrl.slider.value = currentSettings.opacity;
+
+    const blurCtrl = bindSlider('slider-wallpaper-blur', 'val-wallpaper-blur', (v) => {
+      wallpaperManager.setBlur(v);
+    }, 'px');
+    if (blurCtrl) blurCtrl.slider.value = currentSettings.blur;
+
+    const darkCtrl = bindSlider('slider-overlay-darkness', 'val-overlay-darkness', (v) => {
+      wallpaperManager.setOverlayDarkness(v);
+    });
+    if (darkCtrl) darkCtrl.slider.value = currentSettings.overlayDarkness;
+
+    // =====================================================================
+    // 4. WALLPAPER MEDIA (UPLOAD, URL, PRESETS)
+    // =====================================================================
     const handleFile = async (file) => {
       try {
         await wallpaperManager.handleFileUpload(file);
@@ -418,6 +599,7 @@ class SpeedcubeApp {
     }
 
     // Wallpaper Preset Cards
+    const presetsContainer = document.getElementById('wallpaper-presets-grid');
     if (presetsContainer) {
       presetsContainer.innerHTML = '';
       WALLPAPER_PRESETS.forEach(p => {
